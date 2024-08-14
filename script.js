@@ -18,7 +18,9 @@ function uploadVideo() {
         const videoData = {
             title: videoTitle,
             url: URL.createObjectURL(videoFile),
-            comments: []
+            comments: [],
+            likes: 0,
+            dislikes: 0
         };
 
         saveVideo(videoData);
@@ -56,17 +58,19 @@ function addVideoToDOM(videoData) {
 
     // Like/Dislike Buttons
     const likeButton = document.createElement("button");
-    likeButton.textContent = "Like";
+    likeButton.textContent = `Like (${videoData.likes})`;
     likeButton.className = "like-button";
     likeButton.addEventListener("click", () => {
-        handleLikeDislike(videoData, "like");
+        videoData.likes++;
+        updateLikeDislikeButtons(videoCard, videoData);
     });
 
     const dislikeButton = document.createElement("button");
-    dislikeButton.textContent = "Dislike";
+    dislikeButton.textContent = `Dislike (${videoData.dislikes})`;
     dislikeButton.className = "dislike-button";
     dislikeButton.addEventListener("click", () => {
-        handleLikeDislike(videoData, "dislike");
+        videoData.dislikes++;
+        updateLikeDislikeButtons(videoCard, videoData);
     });
 
     const likeDislikeSection = document.createElement("div");
@@ -136,9 +140,14 @@ function addVideoToDOM(videoData) {
     videoGrid.appendChild(videoCard);
 }
 
-function handleLikeDislike(videoData, action) {
-    // Implement your like/dislike handling logic here
-    console.log(`${action} button clicked for ${videoData.title}`);
+function updateLikeDislikeButtons(videoCard, videoData) {
+    const likeButton = videoCard.querySelector(".like-button");
+    const dislikeButton = videoCard.querySelector(".dislike-button");
+
+    likeButton.textContent = `Like (${videoData.likes})`;
+    dislikeButton.textContent = `Dislike (${videoData.dislikes})`;
+
+    saveVideosToLocalStorage();
 }
 
 function saveVideosToLocalStorage() {
@@ -149,8 +158,10 @@ function saveVideosToLocalStorage() {
         let title = video.getElementsByTagName("h3")[0].textContent;
         let url = video.getElementsByTagName("video")[0].src;
         let comments = Array.from(video.getElementsByClassName("comment-list")[0].getElementsByTagName("p")).map(p => p.textContent);
+        let likes = parseInt(video.querySelector(".like-button").textContent.match(/\d+/)[0], 10);
+        let dislikes = parseInt(video.querySelector(".dislike-button").textContent.match(/\d+/)[0], 10);
 
-        videosData.push({ title, url, comments });
+        videosData.push({ title, url, comments, likes, dislikes });
     }
 
     localStorage.setItem("videos", JSON.stringify(videosData));
@@ -180,4 +191,3 @@ window.addEventListener("storage", (event) => {
         localStorage.setItem("newVideo", "false");
     }
 });
-
