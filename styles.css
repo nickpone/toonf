@@ -72,6 +72,30 @@ header button:hover {
     font-weight: bold;
 }
 
+.like-dislike-section {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.like-button, .dislike-button {
+    background-color: #FF0000;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.like-button:hover, .dislike-button:hover {
+    background-color: #cc0000;
+}
+
+.like-button:focus, .dislike-button:focus {
+    outline: 2px solid #cc0000;
+}
+
 .comment-section {
     margin-top: 15px;
 }
