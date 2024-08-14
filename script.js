@@ -54,6 +54,26 @@ function addVideoToDOM(videoData) {
     const videoTitleElement = document.createElement("h3");
     videoTitleElement.textContent = videoData.title;
 
+    // Like/Dislike Buttons
+    const likeButton = document.createElement("button");
+    likeButton.textContent = "Like";
+    likeButton.className = "like-button";
+    likeButton.addEventListener("click", () => {
+        handleLikeDislike(videoData, "like");
+    });
+
+    const dislikeButton = document.createElement("button");
+    dislikeButton.textContent = "Dislike";
+    dislikeButton.className = "dislike-button";
+    dislikeButton.addEventListener("click", () => {
+        handleLikeDislike(videoData, "dislike");
+    });
+
+    const likeDislikeSection = document.createElement("div");
+    likeDislikeSection.className = "like-dislike-section";
+    likeDislikeSection.appendChild(likeButton);
+    likeDislikeSection.appendChild(dislikeButton);
+
     const commentSection = document.createElement("div");
     commentSection.className = "comment-section";
 
@@ -110,9 +130,15 @@ function addVideoToDOM(videoData) {
 
     videoCard.appendChild(videoElement);
     videoCard.appendChild(videoTitleElement);
+    videoCard.appendChild(likeDislikeSection);
     videoCard.appendChild(commentSection);
 
     videoGrid.appendChild(videoCard);
+}
+
+function handleLikeDislike(videoData, action) {
+    // Implement your like/dislike handling logic here
+    console.log(`${action} button clicked for ${videoData.title}`);
 }
 
 function saveVideosToLocalStorage() {
@@ -154,3 +180,4 @@ window.addEventListener("storage", (event) => {
         localStorage.setItem("newVideo", "false");
     }
 });
+
